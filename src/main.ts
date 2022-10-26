@@ -12,6 +12,10 @@ const app: Application = express()
 const server: Server = http.createServer(app)
 dotenv.config()
 
+//* Middleware
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 //* Routes
 app.use(ApplicationRouter)
 
