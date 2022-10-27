@@ -36,7 +36,8 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   const response: ResponseMessage = {
     statusCode,
     data: {
-      message
+      message,
+      errors: error?.errors
     }
   }
   return res.status(statusCode).json(response)

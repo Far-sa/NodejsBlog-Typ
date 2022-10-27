@@ -1,10 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
+import { plainToClass } from 'class-transformer'
+import { validateSync } from 'class-validator'
 
 import { DecoratorController, Post } from '../decorators/router.decorators'
 import { UserModel } from '../models/user.model'
-import { compareHashedString, HashString, jwtGenerator } from '../modules/utils'
+import {
+  compareHashedString,
+  errorHandler,
+  jwtGenerator
+} from '../modules/utils'
 import { FinedUser, IUser } from '../types/user.types'
 import { AuthService } from './auth.services'
+import { RegisterDTO } from './auth.dto'
 
 const authService: AuthService = new AuthService()
 
@@ -13,12 +20,18 @@ export class AuthController {
   @Post()
   async register (req: Request, res: Response, next: NextFunction) {
     try {
-      const { username, password, fullname } = req.body
-      const user: IUser = await authService.register({
-        fullname,
-        username,
-        password
+      const registerDTO: RegisterDTO = plainToClass(RegisterDTO, req.body, {
+        excludeExtraneousValues: true
       })
+      const errors = validateSync(registerDTO)
+      const validationErr = errorHandler(errors)
+      if (validationErr.length > 0)
+        throw {
+          status: 400,
+          message: 'Validation Errors',
+          errors: validationErr
+        }
+      const user: IUser = await authService.register(registerDTO)
       res.status(201).json(user)
     } catch (err) {
       next(err)

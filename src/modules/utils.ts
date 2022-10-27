@@ -49,3 +49,11 @@ export async function jwtGenerator (payload: jwtGenPayloadDTO): Promise<void> {
   //   console.log(error)
   // }
 }
+
+export function errorHandler (errors: any[]) {
+  let errorsTexts: string[] = []
+  for (const errorItem of errors) {
+    errorsTexts = errorsTexts.concat(errorItem.constraints)
+  }
+  return errorsTexts
+}
