@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongoose'
+
 export interface IUser {
   fullname: string
   username: string
@@ -7,3 +9,5 @@ export interface IUser {
   mobile?: string
   avatar?: string
 }
+
+export type FinedUser = (IUser & { _id: ObjectId }) | null

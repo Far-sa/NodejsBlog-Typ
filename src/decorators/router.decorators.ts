@@ -75,7 +75,7 @@ export function Delete (path?: string | undefined) {
 
 export function DecoratorController (controllerPath?: string | undefined) {
   return function (target: any) {
-    if (controllerPath?.[0] == '/') controllerPath = '/' + controllerPath
+    if (controllerPath?.[0] !== '/') controllerPath = '/' + controllerPath
     const path = controllerPath ? controllerPath : '/'
     decoratorRouter.use(path, decoratorRouter)
   }
