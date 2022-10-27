@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongoose'
+import { Document } from 'mongoose'
 
 export interface IUser extends Document {
   fullname: string
@@ -9,5 +9,3 @@ export interface IUser extends Document {
   mobile?: string
   avatar?: string
 }
-
-export type FinedUser = (IUser & { _id: ObjectId }) | null

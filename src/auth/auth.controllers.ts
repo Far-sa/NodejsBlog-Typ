@@ -1,15 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { plainToClass } from 'class-transformer'
-import { validateSync } from 'class-validator'
 
 import { DecoratorController, Post } from '../decorators/router.decorators'
 import { UserModel } from '../models/user.model'
-import {
-  compareHashedString,
-  errorHandler,
-  jwtGenerator
-} from '../modules/utils'
-import { FinedUser, IUser } from '../types/user.types'
+import { compareHashedString, jwtGenerator } from '../modules/utils'
+import { IUser } from '../types/user.types'
 import { AuthService } from './auth.services'
 import { RegisterDTO } from './auth.dto'
 
@@ -23,14 +18,7 @@ export class AuthController {
       const registerDTO: RegisterDTO = plainToClass(RegisterDTO, req.body, {
         excludeExtraneousValues: true
       })
-      const errors = validateSync(registerDTO)
-      const validationErr = errorHandler(errors)
-      if (validationErr.length > 0)
-        throw {
-          status: 400,
-          message: 'Validation Errors',
-          errors: validationErr
-        }
+
       const user: IUser = await authService.register(registerDTO)
       res.status(201).json(user)
     } catch (err) {
@@ -41,7 +29,7 @@ export class AuthController {
   async login (req: Request, res: Response, next: NextFunction) {
     try {
       const { username, password } = req.body
-      const existUser: FinedUser = await UserModel.findOne({ username })
+      const existUser: IUser | null = await UserModel.findOne({ username })
       if (!existUser)
         throw { status: 401, message: 'the username or password is incorrect' }
       const realUser = compareHashedString(password, existUser.password)
