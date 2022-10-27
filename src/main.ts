@@ -11,6 +11,7 @@ import './app.module'
 const app: Application = express()
 const server: Server = http.createServer(app)
 dotenv.config()
+import './modules/mongoDBConfig'
 
 //* Middleware
 app.use(express.json())
@@ -26,6 +27,19 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     message: 'Page not Found'
   }
   return res.status(404).json(response)
+})
+//* Any Error
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+  const statusCode: number = +error?.status || 500
+  const message: string = error?.message || 'Internal Server Error'
+
+  const response: ResponseMessage = {
+    statusCode,
+    data: {
+      message
+    }
+  }
+  return res.status(statusCode).json(response)
 })
 
 //* Lunch Server
