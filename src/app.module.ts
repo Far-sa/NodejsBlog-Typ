@@ -1,2 +1,2 @@
-import './controllers/homeController'
-import './controllers/authController'
+import './home/home.controller'
+import './auth/auth.controllers'

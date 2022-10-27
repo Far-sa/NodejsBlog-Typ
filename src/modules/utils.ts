@@ -1,6 +1,7 @@
 import { compareSync, genSaltSync, hashSync } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 import { UserModel } from '../models/user.model'
+import { jwtGenPayloadDTO } from '../types/public.types'
 
 const ACCESS_TOKEN = String(process.env.JWT_ACCESS_TOKEN)
 
@@ -14,7 +15,7 @@ export function compareHashedString (data: string, encrypted: string): Boolean {
   return compareSync(data, encrypted)
 }
 
-export async function jwtGenerator (payload: any): Promise<void> {
+export async function jwtGenerator (payload: jwtGenPayloadDTO): Promise<void> {
   const { id } = payload
   const user = await UserModel.findById(id)
   if (!user) throw { status: 404, message: 'User not found' }

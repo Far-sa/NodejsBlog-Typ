@@ -4,7 +4,9 @@ import { DecoratorController, Post } from '../decorators/router.decorators'
 import { UserModel } from '../models/user.model'
 import { compareHashedString, HashString, jwtGenerator } from '../modules/utils'
 import { FinedUser, IUser } from '../types/user.types'
-import { sign } from 'jsonwebtoken'
+import { AuthService } from './auth.services'
+
+const authService: AuthService = new AuthService()
 
 @DecoratorController('/auth')
 export class AuthController {
@@ -12,14 +14,10 @@ export class AuthController {
   async register (req: Request, res: Response, next: NextFunction) {
     try {
       const { username, password, fullname } = req.body
-      const newPass = HashString(password)
-
-      const checkUser = await UserModel.findOne({ username })
-      if (checkUser) throw { status: 400, message: 'Username already used' }
-      const user = await UserModel.create({
-        username,
+      const user: IUser = await authService.register({
         fullname,
-        password: newPass
+        username,
+        password
       })
       res.status(201).json(user)
     } catch (err) {
@@ -53,8 +51,3 @@ export class AuthController {
     }
   }
 }
-
-//  const user = await UserModel.findOne({ id: existedUser._id })
-//       const token = sign({ id: user?._id }, 'puppet', {
-//         algorithm: 'HS512'
-//       })
