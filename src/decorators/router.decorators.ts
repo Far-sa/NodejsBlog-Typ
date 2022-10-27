@@ -16,7 +16,7 @@ export function Get (path?: string | undefined) {
     decoratorRouter.get(`${route}`, target[propertyKey])
   }
 }
-export function Post (path: string | undefined) {
+export function Post (path?: string | undefined) {
   return function (
     target: any,
     propertyKey: string,
@@ -27,10 +27,10 @@ export function Post (path: string | undefined) {
         ? path
         : '/' + path
       : '/' + propertyKey
-    decoratorRouter.post('/', target[propertyKey])
+    decoratorRouter.post(`${route}`, target[propertyKey])
   }
 }
-export function Put (path: string | undefined) {
+export function Put (path?: string | undefined) {
   return function (
     target: any,
     propertyKey: string,
@@ -41,10 +41,10 @@ export function Put (path: string | undefined) {
         ? path
         : '/' + path
       : '/' + propertyKey
-    decoratorRouter.put('/', target[propertyKey])
+    decoratorRouter.put(`${route}`, target[propertyKey])
   }
 }
-export function Patch (path: string | undefined) {
+export function Patch (path?: string | undefined) {
   return function (
     target: any,
     propertyKey: string,
@@ -55,10 +55,10 @@ export function Patch (path: string | undefined) {
         ? path
         : '/' + path
       : '/' + propertyKey
-    decoratorRouter.patch('/', target[propertyKey])
+    decoratorRouter.patch(`${route}`, target[propertyKey])
   }
 }
-export function Delete (path: string | undefined) {
+export function Delete (path?: string | undefined) {
   return function (
     target: any,
     propertyKey: string,
@@ -69,7 +69,7 @@ export function Delete (path: string | undefined) {
         ? path
         : '/' + path
       : '/' + propertyKey
-    decoratorRouter.delete('/', target[propertyKey])
+    decoratorRouter.delete(`${route}`, target[propertyKey])
   }
 }
 

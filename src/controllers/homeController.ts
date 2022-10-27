@@ -3,10 +3,10 @@ import { DecoratorController, Get } from '../decorators/router.decorators'
 
 @DecoratorController('/users')
 export class HomeController {
-  @Get("")
+  @Get('/users')
   async getHomeInfo (req: Request, res: Response, next: NextFunction) {
     try {
-      res.send('users')
+      res.send('Hey users')
     } catch (err) {
       next(err)
     }
