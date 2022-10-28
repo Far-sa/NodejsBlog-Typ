@@ -1,13 +1,19 @@
-import { IsDefined, Matches } from 'class-validator'
+import { IsDefined, IsObject } from 'class-validator'
 import { Expose } from 'class-transformer'
+import { ObjectId } from 'mongoose'
 
 export class CreateBlogTDO {
   @IsDefined()
   @Expose()
   title: string
-}
-export class BlogIdDTO {
   @IsDefined()
   @Expose()
-  title: string
+  text: string
+  @IsDefined()
+  @Expose()
+  author: string
+}
+export class BlogIdDTO {
+  @IsObject()
+  id: ObjectId
 }

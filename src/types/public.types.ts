@@ -12,3 +12,4 @@ export interface jwtGenPayloadDTO {
   id: ObjectId
   username: IUser['username']
 }
+export type FineDoc<T> = T | null | undefined
